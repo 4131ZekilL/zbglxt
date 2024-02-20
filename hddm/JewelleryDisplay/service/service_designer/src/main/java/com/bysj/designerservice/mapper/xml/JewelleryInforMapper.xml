@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bysj.designerservice.mapper.JewelleryInforMapper">
+
+    <select id="getPublishJewellery" resultType="com.bysj.designerservice.entity.vo.JewelleryPublishVo">
+        select ji.id ,ji.title ,ji.price,
+               ji.cover,
+               jd2.name as designerName,
+               jc1.title as classofyLevelOne,
+               jc2.title as classofyLevelTwo
+        from jewellery_infor ji
+                                left outer join jewellery_description jd on ji.id =jd.id
+                                left outer join jewellery_designer jd2 on ji.designer_id =jd2.id
+                                left outer join jewellery_classofy jc1 on ji.classofy_parent_id =jc1.id
+                                left outer join jewellery_classofy jc2 on ji.classofy_id =jc2.id
+        where ji.id =#{jewelleryId}
+    </select>
+    <select id="getBaseJewelleryInfo"
+            resultType="com.bysj.designerservice.entity.frontvo.JewelleryFrontInfoVo">
+        select ji.id ,ji.title ,ji.price,
+               ji.buy_count as buyCount,
+               ji.view_count as viewCount,
+               ji.cover ,
+               jd.description,
+               jd2.id as designerId,
+               jd2.intro,
+               jd2.avatar ,
+               jd2.name as designerName,
+               es1.id as classofyLevelOneId, es1.title as classofyLevelOne,
+               es2.id as classofyLevelTwoId, es2.title as classofyLevelTwo
+        from jewellery_infor ji
+                 left outer join jewellery_description jd on ji.id =jd.id
+                 left outer join jewellery_designer jd2 on ji.designer_id =jd2.id
+                 left outer join jewellery_classofy es1 on ji.classofy_parent_id =es1.id
+                 left outer join jewellery_classofy es2 on ji.classofy_id =es2.id
+        where ji.id =#{jewelleryId}
+    </select>
+
+</mapper>
